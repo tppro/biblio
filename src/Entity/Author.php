@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AuthorRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,8 +25,13 @@ class Author
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_naissance = null;
 
-    #[ORM\OneToOne(targetEntity: Country::class, cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne]
     private ?Country $country = null;
+
+    public function __construct()
+    {
+        $this->country = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +82,28 @@ class Author
     public function setCountry(?Country $country): self
     {
         $this->country = $country;
+
+        return $this;
+    }
+
+    public function addCountry(Country $country): self
+    {
+        if (!$this->country->contains($country)) {
+            $this->country->add($country);
+            $country->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCountry(Country $country): self
+    {
+        if ($this->country->removeElement($country)) {
+            // set the owning side to null (unless already changed)
+            if ($country->getAuthor() === $this) {
+                $country->setAuthor(null);
+            }
+        }
 
         return $this;
     }

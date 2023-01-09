@@ -12,6 +12,7 @@
                 <th>Nom</th>
                 <th>Prenom</th>
                 <th>Date_naissance</th>
+                <th>Pays</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{ author.nom }}</td>
                 <td>{{ author.prenom }}</td>
                 <td>{{ author.dateNaissance ? author.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>{{ author.country.nom }}</td>
                 <td>
                     <a href="{{ path('app_author_show', {'id': author.id}) }}">show</a>
                     <a href="{{ path('app_author_edit', {'id': author.id}) }}">edit</a>

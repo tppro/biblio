@@ -16,6 +16,9 @@ class Country
     #[ORM\Column(length: 30)]
     private ?string $nom = null;
 
+    #[ORM\ManyToOne(inversedBy: 'country')]
+    private ?Author $author = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,18 @@ class Country
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?Author
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?Author $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
