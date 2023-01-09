@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bookj index{% endblock %}
+
+{% block body %}
+    <h1>Bookj index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Annee</th>
+                <th>Resumee</th>
+                <th>Etat</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bookj in bookjs %}
+            <tr>
+                <td>{{ bookj.id }}</td>
+                <td>{{ bookj.titre }}</td>
+                <td>{{ bookj.annee }}</td>
+                <td>{{ bookj.resumee }}</td>
+                <td>{{ bookj.etat }}</td>
+                <td>
+                    <a href="{{ path('app_bookj_show', {'id': bookj.id}) }}">show</a>
+                    <a href="{{ path('app_bookj_edit', {'id': bookj.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_bookj_new') }}">Create new</a>
+{% endblock %}
