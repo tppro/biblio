@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Titre</th>
+                <th>Auteur</th>
                 <th>Annee</th>
                 <th>Resumee</th>
                 <th>Etat</th>
@@ -21,6 +22,11 @@
             <tr>
                 <td>{{ book.id }}</td>
                 <td>{{ book.titre }}</td>
+                <td>
+                    {% for author in book.author %}
+                        {{ author.prenom}} {{ author.nom }}<br />
+                    {% endfor %}
+                </td>
                 <td>{{ book.annee }}</td>
                 <td>{{ book.resumee }}</td>
                 <td>{{ book.etat }}</td>
