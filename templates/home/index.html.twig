@@ -11,10 +11,16 @@
 <div class="example-wrapper">
     <h1>Hello {{ userName }}!</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/tbex/Sites/cours/symfony/biblio/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/tbex/Sites/cours/symfony/biblio/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+    <nav>
+        <ul>
+            <li><a href="{{ path('app_home') }}">Accueil</a></li>
+            <li><a href="{{ path('app_book_index') }}">Livres</a></li>
+            <li><a href="{{ path('app_author_index') }}">Auteurs</a></li>
+            <li><a href="{{ path('app_user_index') }}">Utilisateurs</a></li>
+            <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
+            <li><a href="{{ path('app_login') }}">Login</a></li>
+            <li><a href="{{ path('app_logout') }}">Logout</a></li>
+        </ul>
+    </nav>
 </div>
 {% endblock %}
