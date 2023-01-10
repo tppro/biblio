@@ -13,13 +13,13 @@
 
     <nav>
         <ul>
-            <li><a href="{{ path('app_home') }}">Accueil</a></li>
-            <li><a href="{{ path('app_book_index') }}">Livres</a></li>
-            <li><a href="{{ path('app_author_index') }}">Auteurs</a></li>
-            <li><a href="{{ path('app_user_index') }}">Utilisateurs</a></li>
-            <li><a href="{{ path('app_register') }}">S'enregistrer</a></li>
-            <li><a href="{{ path('app_login') }}">Login</a></li>
-            <li><a href="{{ path('app_logout') }}">Logout</a></li>
+            <li><a href="{{ path('app_home') }}">{% trans %}Accueil{% endtrans %}</a></li>
+            <li><a href="{{ path('app_book_index') }}">{% trans %}Livres{% endtrans %}</a></li>
+            <li><a href="{{ path('app_author_index') }}">{% trans %}Auteurs{% endtrans %}</a></li>
+            <li><a href="{{ path('app_user_index') }}">{% trans %}Utilisateurs{% endtrans %}</a></li>
+            <li><a href="{{ path('app_register') }}">{% trans %}S'enregistrer{% endtrans %}</a></li>
+            <li><a href="{{ path('app_login') }}">{% trans %}Login{% endtrans %}</a></li>
+            <li><a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a></li>
         </ul>
     </nav>
 </div>
