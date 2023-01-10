@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dvd index{% endblock %}
+
+{% block body %}
+    <h1>Dvd index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Annee</th>
+                <th>Resumee</th>
+                <th>Is_serie</th>
+                <th>Producteur</th>
+                <th>Genre</th>
+                <th>Nbmedia</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dvd in dvds %}
+            <tr>
+                <td>{{ dvd.id }}</td>
+                <td>{{ dvd.titre }}</td>
+                <td>{{ dvd.annee }}</td>
+                <td>{{ dvd.resumee }}</td>
+                <td>{{ dvd.isSerie ? 'Yes' : 'No' }}</td>
+                <td>{{ dvd.producteur }}</td>
+                <td>{{ dvd.genre.libelle }}</td>
+                <td>{{ dvd.nbmedia }}</td>
+                <td>
+                    <a href="{{ path('app_dvd_show', {'id': dvd.id}) }}">show</a>
+                    <a href="{{ path('app_dvd_edit', {'id': dvd.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dvd_new') }}">Create new</a>
+{% endblock %}

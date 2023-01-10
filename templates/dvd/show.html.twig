@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dvd{% endblock %}
+
+{% block body %}
+    <h1>Dvd</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ dvd.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ dvd.titre }}</td>
+            </tr>
+            <tr>
+                <th>Annee</th>
+                <td>{{ dvd.annee }}</td>
+            </tr>
+            <tr>
+                <th>Resumee</th>
+                <td>{{ dvd.resumee }}</td>
+            </tr>
+            <tr>
+                <th>Is_serie</th>
+                <td>{{ dvd.isSerie ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Producteur</th>
+                <td>{{ dvd.producteur }}</td>
+            </tr>
+            <tr>
+                <th>Nbmedia</th>
+                <td>{{ dvd.nbmedia }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dvd_index') }}">back to list</a>
+
+    <a href="{{ path('app_dvd_edit', {'id': dvd.id}) }}">edit</a>
+
+    {{ include('dvd/_delete_form.html.twig') }}
+{% endblock %}

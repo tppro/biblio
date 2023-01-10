@@ -33,7 +33,7 @@ class Author
 
     public function __construct()
     {
-        $this->country = new ArrayCollection();
+        //$this->country = new ArrayCollection();
         $this->books = new ArrayCollection();
     }
 

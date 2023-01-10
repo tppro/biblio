@@ -6,7 +6,7 @@ use App\Repository\DvdRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: DvdRepository::class)]
-class Dvd //extends Document
+class Dvd extends Document
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

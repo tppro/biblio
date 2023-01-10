@@ -21,16 +21,19 @@ class Exemplaire
     #[ORM\OneToMany(mappedBy: 'exemplaire', targetEntity: Document::class)]
     private Collection $documents;
 
-    #[ORM\OneToMany(mappedBy: 'exemplaire', targetEntity: Edition::class)]
-    private Collection $edition;
-
     #[ORM\ManyToOne(inversedBy: 'exemplaire')]
     private ?Emprunt $emprunt = null;
+
+    #[ORM\OneToMany(mappedBy: 'exemplaire', targetEntity: Emprunt::class)]
+    private Collection $emprunts;
+
+    #[ORM\ManyToOne(inversedBy: 'exemplaires')]
+    private ?Edition $edition = null;
 
     public function __construct()
     {
         $this->documents = new ArrayCollection();
-        $this->edition = new ArrayCollection();
+        $this->emprunts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,36 +83,6 @@ class Exemplaire
         return $this;
     }
 
-    /**
-     * @return Collection<int, Edition>
-     */
-    public function getEdition(): Collection
-    {
-        return $this->edition;
-    }
-
-    public function addEdition(Edition $edition): self
-    {
-        if (!$this->edition->contains($edition)) {
-            $this->edition->add($edition);
-            $edition->setExemplaire($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEdition(Edition $edition): self
-    {
-        if ($this->edition->removeElement($edition)) {
-            // set the owning side to null (unless already changed)
-            if ($edition->getExemplaire() === $this) {
-                $edition->setExemplaire(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getEmprunt(): ?Emprunt
     {
         return $this->emprunt;
@@ -118,6 +91,48 @@ class Exemplaire
     public function setEmprunt(?Emprunt $emprunt): self
     {
         $this->emprunt = $emprunt;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Emprunt>
+     */
+    public function getEmprunts(): Collection
+    {
+        return $this->emprunts;
+    }
+
+    public function addEmprunt(Emprunt $emprunt): self
+    {
+        if (!$this->emprunts->contains($emprunt)) {
+            $this->emprunts->add($emprunt);
+            $emprunt->setExemplaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmprunt(Emprunt $emprunt): self
+    {
+        if ($this->emprunts->removeElement($emprunt)) {
+            // set the owning side to null (unless already changed)
+            if ($emprunt->getExemplaire() === $this) {
+                $emprunt->setExemplaire(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getEdition(): ?Edition
+    {
+        return $this->edition;
+    }
+
+    public function setEdition(?Edition $edition): self
+    {
+        $this->edition = $edition;
 
         return $this;
     }

@@ -2,16 +2,14 @@
 
 namespace App\Form;
 
-use App\Entity\Book;
-use App\Entity\Author;
 use App\Entity\Exemplaire;
-use App\Entity\Genre;
+use App\Entity\Journal;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BookType extends AbstractType
+class JournalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -19,17 +17,8 @@ class BookType extends AbstractType
             ->add('titre')
             ->add('annee')
             ->add('resumee')
-            ->add('genre', EntityType::class, [
-                'class' => Genre::class,
-                'choice_label' => 'libelle',
-                'multiple' => false,
-            ])
-            ->add('etat')
-            ->add('author', EntityType::class, [
-                'class' => Author::class,
-                'choice_label' => 'nom',
-                'multiple' => true,
-            ])
+            ->add('date_parution')
+            ->add('frequence')
             ->add('exemplaire', EntityType::class, [
                 'class' => Exemplaire::class,
                 /*
@@ -50,7 +39,7 @@ class BookType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Book::class,
+            'data_class' => Journal::class,
         ]);
     }
 }

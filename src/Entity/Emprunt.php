@@ -22,16 +22,19 @@ class Emprunt
     #[ORM\Column]
     private ?int $delais = null;
 
-    #[ORM\OneToMany(mappedBy: 'emprunt', targetEntity: User::class)]
-    private Collection $users;
+    #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'emprunt', targetEntity: Exemplaire::class)]
-    private Collection $exemplaire;
+    #[ORM\ManyToOne(inversedBy: 'emprunts')]
+    private ?Exemplaire $exemplaire = null;
+
+    public function __toString(){
+        return '';
+    }
 
     public function __construct()
     {
-        $this->users = new ArrayCollection();
-        $this->exemplaire = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -63,63 +66,28 @@ class Emprunt
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
+    public function getUser(): ?User
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function addUser(User $user): self
+    public function setUser(?User $user): self
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setEmprunt($this);
-        }
+        $this->user = $user;
 
         return $this;
     }
 
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getEmprunt() === $this) {
-                $user->setEmprunt(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Exemplaire>
-     */
-    public function getExemplaire(): Collection
+    public function getExemplaire(): ?Exemplaire
     {
         return $this->exemplaire;
     }
 
-    public function addExemplaire(Exemplaire $exemplaire): self
+    public function setExemplaire(?Exemplaire $exemplaire): self
     {
-        if (!$this->exemplaire->contains($exemplaire)) {
-            $this->exemplaire->add($exemplaire);
-            $exemplaire->setEmprunt($this);
-        }
+        $this->exemplaire = $exemplaire;
 
         return $this;
     }
 
-    public function removeExemplaire(Exemplaire $exemplaire): self
-    {
-        if ($this->exemplaire->removeElement($exemplaire)) {
-            // set the owning side to null (unless already changed)
-            if ($exemplaire->getEmprunt() === $this) {
-                $exemplaire->setEmprunt(null);
-            }
-        }
-
-        return $this;
-    }
 }

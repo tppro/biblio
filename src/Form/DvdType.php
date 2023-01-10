@@ -2,8 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Book;
-use App\Entity\Author;
+use App\Entity\Dvd;
 use App\Entity\Exemplaire;
 use App\Entity\Genre;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -11,7 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class BookType extends AbstractType
+class DvdType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -24,12 +23,10 @@ class BookType extends AbstractType
                 'choice_label' => 'libelle',
                 'multiple' => false,
             ])
-            ->add('etat')
-            ->add('author', EntityType::class, [
-                'class' => Author::class,
-                'choice_label' => 'nom',
-                'multiple' => true,
-            ])
+            ->add('is_serie')
+            ->add('producteur')
+            ->add('nbmedia')
+            //->add('exemplaire')
             ->add('exemplaire', EntityType::class, [
                 'class' => Exemplaire::class,
                 /*
@@ -50,7 +47,7 @@ class BookType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Book::class,
+            'data_class' => Dvd::class,
         ]);
     }
 }

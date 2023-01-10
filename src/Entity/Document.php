@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\InheritanceType("SINGLE_TABLE")]
 #[ORM\DiscriminatorColumn(name:"documentType", type:"string")]
-#[ORM\DiscriminatorMap(["Document" => Document::class, "Book" => Book::class])]
-//#[ORM\DiscriminatorMap(["Document" => Document::class, "Book" => Book::class, "Dvd" => Dvd::class, "Journal" => Journal::class])]
+//#[ORM\DiscriminatorMap(["Document" => Document::class, "Book" => Book::class])]
+#[ORM\DiscriminatorMap(["Document" => Document::class, "Book" => Book::class, "Dvd" => Dvd::class, "Journal" => Journal::class])]
 #[ORM\Entity(repositoryClass: DocumentRepository::class)]
 class Document
 {
@@ -32,12 +32,12 @@ class Document
     #[ORM\ManyToOne(inversedBy: 'documents')]
     private ?Exemplaire $exemplaire = null;
 
-    #[ORM\OneToMany(mappedBy: 'document', targetEntity: Genre::class)]
-    private Collection $genre;
+    #[ORM\ManyToOne(inversedBy: 'documents')]
+    private ?Genre $genre = null;
 
     public function __construct()
     {
-        $this->genre = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -93,32 +93,14 @@ class Document
         return $this;
     }
 
-    /**
-     * @return Collection<int, Genre>
-     */
-    public function getGenre(): Collection
+    public function getGenre(): ?Genre
     {
         return $this->genre;
     }
 
-    public function addGenre(Genre $genre): self
+    public function setGenre(?Genre $genre): self
     {
-        if (!$this->genre->contains($genre)) {
-            $this->genre->add($genre);
-            $genre->setDocument($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGenre(Genre $genre): self
-    {
-        if ($this->genre->removeElement($genre)) {
-            // set the owning side to null (unless already changed)
-            if ($genre->getDocument() === $this) {
-                $genre->setDocument(null);
-            }
-        }
+        $this->genre = $genre;
 
         return $this;
     }
