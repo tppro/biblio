@@ -28,9 +28,13 @@ class Author
     #[ORM\ManyToOne]
     private ?Country $country = null;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class)]
+    private Collection $books;
+
     public function __construct()
     {
         $this->country = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +106,36 @@ class Author
             // set the owning side to null (unless already changed)
             if ($country->getAuthor() === $this) {
                 $country->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Book>
+     */
+    public function getBooks(): Collection
+    {
+        return $this->books;
+    }
+
+    public function addBook(Book $book): self
+    {
+        if (!$this->books->contains($book)) {
+            $this->books->add($book);
+            $book->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBook(Book $book): self
+    {
+        if ($this->books->removeElement($book)) {
+            // set the owning side to null (unless already changed)
+            if ($book->getAuthor() === $this) {
+                $book->setAuthor(null);
             }
         }
 
