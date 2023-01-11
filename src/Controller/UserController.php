@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\Sendmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +20,22 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
+    }
+
+    #[Route('/sendmail', name: 'app_user_sendmail', methods: ['GET'])]
+    public function sendmail(Sendmail $sendmail)
+    {
+        $from = 'testmail@biblio.fr';
+        $to = 'tristan@plumet.com';
+        $subject = 'Test envoie mail';
+        $context = [
+            'to' => $to,
+        ];
+        $sendmail->send($from, $to, $subject, 'test', $context);
+
+        dd("Mail envoyé !");
+
+        return '';
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
