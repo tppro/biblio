@@ -6,8 +6,10 @@ use App\Entity\Book;
 use App\Entity\Author;
 use App\Entity\Exemplaire;
 use App\Entity\Genre;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,6 +21,16 @@ class BookType extends AbstractType
             ->add('titre')
             ->add('annee')
             ->add('resumee')
+            ->add('image', FileType::class, [
+                'required' => false,
+                'label' => 'Image',
+                'data_class' => null,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '512K'
+                    ])
+                ]
+            ])
             ->add('genre', EntityType::class, [
                 'class' => Genre::class,
                 'choice_label' => 'libelle',
