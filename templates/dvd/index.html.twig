@@ -28,7 +28,7 @@
                 <td>{{ dvd.resumee }}</td>
                 <td>{{ dvd.isSerie ? 'Yes' : 'No' }}</td>
                 <td>{{ dvd.producteur }}</td>
-                <td>{{ dvd.genre.libelle }}</td>
+                <td>{% if dvd.genre.libelle is defined %}{{ dvd.genre.libelle }}{% endif %}</td>
                 <td>{{ dvd.nbmedia }}</td>
                 <td>
                     <a href="{{ path('app_dvd_show', {'id': dvd.id}) }}">show</a>

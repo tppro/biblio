@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Dvd;
 use App\Form\DvdType;
 use App\Repository\DvdRepository;
+use App\Service\JsonQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,15 @@ class DvdController extends AbstractController
         ]);
     }
 
+    #[Route('/jsonquery', name: 'app_dvd_jsonquery', methods: ['GET'])]
+    public function jsonquery(JsonQuery $jsonQuery)
+    {
+        $baseurl = 'https://api.themoviedb.org/3';
+        $urlquery = '/movie/popular';
+        $api_key = '?api_key=2c0e7f4f407b11f7bbc052e2e3b28ad3';
+        $jsonQuery->getDvd($baseurl, $urlquery, $api_key);
+    }
+    
     #[Route('/new', name: 'app_dvd_new', methods: ['GET', 'POST'])]
     public function new(Request $request, DvdRepository $dvdRepository): Response
     {
