@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use App\Service\ImportUser;
 use App\Service\Sendmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,18 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
+    }
+
+    #[Route('/import', name: 'app_user_import', methods: ['GET'])]
+    public function import(ImportUser $importUser)
+    {
+        define('PATH', __DIR__.'/../../public/import/');
+        $list = $importUser->loadfile(PATH . 'uk-50.csv');
+
+        //récupérer une variable définie dans services.yaml
+        //$variable = $this->getParameter('variable');
+
+        dd($list);
     }
 
     #[Route('/sendmail', name: 'app_user_sendmail', methods: ['GET'])]
