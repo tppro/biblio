@@ -31,4 +31,4 @@ services:
 
     App\EventListener\BookListener:
         tags:
-            - {name: kernel.event_listener, event: book.add, method: onAddBookListener}
+            - {name: kernel.event_listener, event: book.add, method: onAddBookListener, priority: 100}
