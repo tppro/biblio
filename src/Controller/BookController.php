@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Book;
+use App\Event\AddBookEvent;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Service\PictureUploader;
@@ -10,10 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 #[Route('/book')]
 class BookController extends AbstractController
 {
+
+    public function __construct(private EventDispatcherInterface $eventDispatcher)
+    {
+        
+    }
+
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
@@ -33,8 +41,16 @@ class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $pictureUploader->init($form, $book);
-            $pictureUploader->do('create');
+            if ($book->getImage()) {
+                $pictureUploader->init($form, $book);
+                $pictureUploader->do('create');
+            }
+            
+            //on créé l'évènement ADD_BOOK_EVENT 
+            $addBookEvent = new AddBookEvent($book);
+            //maintenant on dispatch l'évènement :
+            $this->eventDispatcher->dispatch($addBookEvent, AddBookEvent::ADD_BOOK_EVENT);
+
             $bookRepository->save($book, true);
 
             return $this->redirectToRoute('app_book_index', [], Response::HTTP_SEE_OTHER);
@@ -61,8 +77,10 @@ class BookController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $pictureUploader->init($form, $book);
-            $pictureUploader->do('update');
+            if ($book->getImage()) {
+                $pictureUploader->init($form, $book);
+                $pictureUploader->do('update');
+            }
 
             $bookRepository->save($book, true);
 
