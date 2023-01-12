@@ -65,4 +65,63 @@ requêtes :
 maîtresse : HttpKernelInterface::MASTER_REQUEST
 secondaire : HttpKernelInterface::SUB_REQUEST
 
+//Evènement bibliothèque tierce :
+Doctrine :
+// src/Entity/Product.php
+use Doctrine\ORM\Mapping as ORM;
+
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+class Product
+{
+    // ...
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+}
+
+preRemove qui est déclenché juste avant l'execution la méthode EntityManager#remove()
+postRemove qui est déclenché juste après l'execution la méthode EntityManager#remove()
+prePersist qui est déclenché juste avant l'execution la méthode EntityManager#persist()
+postPersist qui est déclenché juste après l'execution la méthode EntityManager#persist()
+preUpdate qui est déclenché juste avant l'execution de la méthode EntityManager#flush()
+postUpdate qui est déclenché juste après l'execution de la méthode EntityManager#flush()
+postLoad lorsque l'entité est chargé dans l'EntityManager.
+
+Evènement concernant la sécurité
+l'authentification :
+CheckPassportEvent déclenché lors de initialisation de la connexion et la création du token CSRF
+--------
+AuthentificationTokenCreatedEvent déclenché lorsque le token de connexion a été créé et que l'utilisateur qui souhaite se connecter a été instancié.
+--------
+AuthentificationSuccessEvent déclenché juste avant que l'utilisateur soit connecté.
+Ici l'utilisateur existe bien, le mot de passe a été vérifié.
+C'est le dernier évènement déclenché pendant lequel on peut faire echouer encore la connexion 
+Dans ce cas, on utiliserait un throw new AuthentificationException("message")
+--------
+LoginSuccessEvent déclenché quand la connexion de l'utilisateur a aboutie.
+--------
+LoginFailureEvent déclenché quand la connexion de l'utilisateur a écouché.
+--------
+LogoutEvent déclenché juste avant la déconnexion de l'utilisateur.
+--------
+TokenDeauthenticatedEvent déclenché lorsque le mot de passe a changé et que l'utilisateur est automatiquement déconnecté.
+--------
+Evènement de formulaire :
+PRE_SET_DATA déclenché juste avant l'affichage d'un formulaire.
+--------
+POST_SET_DATA déclenché juste après l'affichage d'un formulaire,
+la modification n'est plus possible à ce stade.
+--------
+PRE_SUBMIT déclenché juste avant la soumission / réception du formulaire et avant sa sérialisation.
+A ce stade l'ajout / modification / suppression des champs de formulaire est possible, leurs valeurs également
+--------
+SUBMIT Déclenché avant la conversion du formulaire en objet, seule la modification des valeurs reste possible
+--------
+POST_SUBMIT Déclenché après la réception du formulaire. Plus aucune modification possible, seule la lecture est possible.
+
+
+
 */
