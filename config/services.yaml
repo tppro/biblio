@@ -28,3 +28,7 @@ services:
         arguments: 
             $linedelimiter: "\r"
             $separator: ';'
+
+    App\EventListener\BookListener:
+        tags:
+            - {name: kernel.event_listener, event: book.add, method: onAddBookListener}
