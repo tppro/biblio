@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Book;
 use App\Event\AddBookEvent;
+use App\Event\UpdateBookEvent;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Service\PictureUploader;
@@ -25,9 +26,6 @@ class BookController extends AbstractController
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
     public function index(BookRepository $bookRepository): Response
     {
-        //$books = $bookRepository->findAll();
-        //dd($books);
-
         return $this->render('book/index.html.twig', [
             'books' => $bookRepository->findAll(),
         ]);
@@ -81,6 +79,10 @@ class BookController extends AbstractController
                 $pictureUploader->init($form, $book);
                 $pictureUploader->do('update');
             }
+
+            //on créé l'évènement UPDATE_BOOK_EVENT 
+            $updateBookEvent = new UpdateBookEvent($book);
+            $this->eventDispatcher->dispatch($updateBookEvent, UpdateBookEvent::UPDATE_BOOK_EVENT);
 
             $bookRepository->save($book, true);
 
