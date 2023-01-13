@@ -1,0 +1,30 @@
+{% set pages = pages %}
+{% set currentPage = currentPage %}
+{% set limit = limit %}
+<nav>
+    <ul class="pagination">
+        {% if currentPage > 1 %}
+        <li class="page-item">
+            <a href="{{ path('app_dvd_index', {page: currentPage - 1}) }}" class="page-link">&nbsp;&lt;&nbsp;</a>
+        </li>
+        {% endif %}
+        {% for page in 1..pages %}
+        <li class="page-item">
+            <a href="{{ path('app_dvd_index', {page: page}) }}" class="page-link">
+                {% if currentPage == page %}
+                <strong><em>
+                {% endif %}
+                &nbsp;{{ page }}&nbsp;
+                {% if currentPage == page %}
+                </em></strong>
+                {% endif %}
+            </a>
+        </li>
+        {% endfor %}
+        {% if currentPage < pages %}
+        <li class="page-item">
+            <a href="{{ path('app_dvd_index', {page: currentPage + 1}) }}" class="page-link">&nbsp;&gt;&nbsp;</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>

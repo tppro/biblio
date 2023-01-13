@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Dvd;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,6 +20,55 @@ class DvdRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Dvd::class);
+    }
+
+    public function findDvdsPaginated(int $page = 1, int $limit = 5)
+    {
+        $page = abs($page);
+        $limit = abs($limit);
+
+        $result = [];
+        $query = $this->getEntityManager()->createQueryBuilder()
+                    ->select('d', 'e', 'g')
+                    ->from('App\Entity\Dvd', 'd')
+                    ->leftJoin('d.genre', 'g')
+                    ->leftJoin('d.exemplaire', 'e')
+                    ->setMaxResults($limit)
+                    ->setFirstResult($page * $limit - $limit)
+                    ;
+
+        //On veut afficher les résultats à partir de la page 5
+        //on définie la limit à 2 éléments à afficher par page
+        //le premier élément à afficher va s'obtenir avec le calcul suivant :
+        //5*2 - 2 = 8 ceci est l'index de l'élément Dvd à afficher
+
+        //dd($query->getQuery()->getResult());
+        //on va indiquer à Doctrine que l'on souhaite utiliser son paginator :
+        $paginator = new Paginator($query);
+        $data = $paginator->getQuery()->getResult();
+
+        //si pas de données on retourne un tableau vide
+        if (empty($data)) {
+            return $result;
+        }
+
+        //on calcul le nombre de page 
+        //ceil permet d'obtenir l'arrondie supérieur
+        //on fait la méthode count de paginatpr afin
+        //d'obtenir le nombre total d'éléments concerner par notre requête
+        //(sans la notion de limit)
+        //du coup on divise le nombre obtenu par la limit
+        //afin de connaître le nombre de pages
+        $pages = ceil($paginator->count() / $limit);
+        //dd($data);
+        //dump($paginator->count());
+        //dd($pages);
+        $result['data'] = $data;
+        $result['pages'] = $pages;
+        $result['currentPage'] = $page;
+        $result['limit'] = $limit;
+
+        return $result;
     }
 
     public function save(Dvd $entity, bool $flush = false): void

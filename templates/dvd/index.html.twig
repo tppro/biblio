@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Dvd index</h1>
 
+    {{ include('pagination/pagination.html.twig') }}
     <table class="table">
         <thead>
             <tr>
@@ -42,6 +43,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ include('pagination/pagination.html.twig') }}
 
     <a href="{{ path('app_dvd_new') }}">Create new</a>
 {% endblock %}
