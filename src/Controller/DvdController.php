@@ -29,6 +29,7 @@ class DvdController extends AbstractController
             'pages' => $result['pages'],
             'currentPage' => $result['currentPage'],
             'limit' => $result['limit'],
+            'path' => 'app_dvd_index',
         ]);
     }
 
