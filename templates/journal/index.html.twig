@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Journal index</h1>
 
+    {{ include('pagination/pagination.html.twig') }}
     <table class="table">
         <thead>
             <tr>
@@ -23,7 +24,12 @@
                 <td>{{ journal.id }}</td>
                 <td>{{ journal.titre }}</td>
                 <td>{{ journal.annee }}</td>
-                <td>{{ journal.resumee }}</td>
+                <td>
+                    <div class="resumee" rel="{{ journal.id }}" id="resumee_{{ journal.id }}">{{ journal.resumee|u.truncate(50, '...') }}</div>
+                    <div class="resumee_detail" rel="{{ journal.id }}" id="resumee_detail_{{ journal.id }}">
+                        {{ journal.resumee }}
+                    </div>
+                </td>
                 <td>{{ journal.dateParution ? journal.dateParution|date('Y-m-d') : '' }}</td>
                 <td>{{ journal.frequence }}</td>
                 <td>
@@ -38,6 +44,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ include('pagination/pagination.html.twig') }}
 
     <a href="{{ path('app_journal_new') }}">Create new</a>
 {% endblock %}

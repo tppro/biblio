@@ -24,10 +24,19 @@ class BookController extends AbstractController
     }
 
     #[Route('/', name: 'app_book_index', methods: ['GET'])]
-    public function index(BookRepository $bookRepository): Response
+    public function index(BookRepository $bookRepository, Request $request): Response
     {
+        //on récupère dans l'url la valeur du paramètre "page"
+        $page = $request->query->getInt('page', 1);
+
+        $result = $bookRepository->findDocumentsPaginated('\Book', $page, 5);
+
         return $this->render('book/index.html.twig', [
-            'books' => $bookRepository->findAll(),
+            'books' => $result['data'],
+            'pages' => $result['pages'],
+            'currentPage' => $result['currentPage'],
+            'limit' => $result['limit'],
+            'path' => 'app_book_index',
         ]);
     }
 

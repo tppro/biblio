@@ -3,3 +3,13 @@
     display: inline-grid;
     grid-template-columns: auto auto auto auto auto auto auto;
 }
+
+.resumee {
+    display: block;
+    cursor: pointer;
+}
+
+.resumee_detail {
+    display: none;
+    cursor: pointer;
+}

@@ -26,7 +26,12 @@
                 <td>{{ dvd.id }}</td>
                 <td>{{ dvd.titre }}</td>
                 <td>{{ dvd.annee }}</td>
-                <td>{{ dvd.resumee }}</td>
+                <td>
+                    <div class="resumee" rel="{{ dvd.id }}" id="resumee_{{ dvd.id }}">{{ dvd.resumee|u.truncate(50, '...') }}</div>
+                    <div class="resumee_detail" rel="{{ dvd.id }}" id="resumee_detail_{{ dvd.id }}">
+                        {{ dvd.resumee }}
+                    </div>
+                </td>
                 <td>{{ dvd.isSerie ? 'Yes' : 'No' }}</td>
                 <td>{{ dvd.producteur }}</td>
                 <td>{% if dvd.genre.libelle is defined %}{{ dvd.genre.libelle }}{% endif %}</td>

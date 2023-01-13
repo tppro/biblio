@@ -14,10 +14,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class JournalController extends AbstractController
 {
     #[Route('/', name: 'app_journal_index', methods: ['GET'])]
-    public function index(JournalRepository $journalRepository): Response
+    public function index(JournalRepository $journalRepository, Request $request): Response
     {
+        //on récupère dans l'url la valeur du paramètre "page"
+        $page = $request->query->getInt('page', 1);
+
+        $result = $journalRepository->findDocumentsPaginated('\Journal', $page, 5);
+
         return $this->render('journal/index.html.twig', [
-            'journals' => $journalRepository->findAll(),
+            'journals' => $result['data'],
+            'pages' => $result['pages'],
+            'currentPage' => $result['currentPage'],
+            'limit' => $result['limit'],
+            'path' => 'app_journal_index',
         ]);
     }
 

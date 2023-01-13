@@ -5,9 +5,11 @@
 {% block body %}
     <h1>Book index</h1>
 
+    {{ include('pagination/pagination.html.twig') }}
     <table class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>Id</th>
                 <th>Titre</th>
                 <th>Auteur</th>
@@ -30,7 +32,12 @@
                     {% endfor %}
                 </td>
                 <td>{{ book.annee }}</td>
-                <td>{{ book.resumee }}</td>
+                <td>
+                    <div class="resumee" rel="{{ book.id }}" id="resumee_{{ book.id }}">{{ book.resumee|u.truncate(50, '...') }}</div>
+                    <div class="resumee_detail" rel="{{ book.id }}" id="resumee_detail_{{ book.id }}">
+                        {{ book.resumee }}
+                    </div>
+                </td>
                 <td>{{ book.genre.libelle }}</td>
                 <td>{{ book.etat }}</td>
                 <td>
@@ -45,6 +52,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ include('pagination/pagination.html.twig') }}
 
     <a href="{{ path('app_book_new') }}">Create new</a>
 {% endblock %}

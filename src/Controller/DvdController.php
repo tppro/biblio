@@ -20,11 +20,9 @@ class DvdController extends AbstractController
         //on récupère dans l'url la valeur du paramètre "page"
         $page = $request->query->getInt('page', 1);
 
-        $result = $dvdRepository->findDvdsPaginated($page, 5);
-        //dd($result);
+        $result = $dvdRepository->findDocumentsPaginated('\Dvd', $page, 5);
 
         return $this->render('dvd/index.html.twig', [
-            //'dvds' => $dvdRepository->findAll(),
             'dvds' => $result['data'],
             'pages' => $result['pages'],
             'currentPage' => $result['currentPage'],
