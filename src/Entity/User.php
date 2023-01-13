@@ -10,6 +10,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+//permet d'utiliser les expressions régulières pour vérifier les valeurs contenues
+//dans les champs de formulaire.
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
@@ -49,6 +52,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $ville = null;
+
+    //#[Assert\NotBlank]
+    //#[Assert\Regex('/^[0-9]{3}[0-9]{4}$/')]
+    //https://regex101.com/
+    //numéro de téléphone :
+    //^0[0-9]{1} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}$
+    //#[Assert\Regex('/^0[0-9]{1} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}$/')]
+    //^0[0-9]{9}$
+    //#[Assert\Regex('/^0[0-9]{9}$/')]
+
+    /*
+    //il faut que au moins l'une des expressions correponde à la valeur contenue dans le champ de formulaire
+    #[Assert\AtLeastOneOf([
+        new Assert\Regex('/^\d-\d{3}-\d{5}-\d$/'),
+        new Assert\Regex('/^\d{3}-\d-\d{3}-\d{5}-\d{2}$/'),
+    ])]
+    
+    #[Assert\AtLeastOneOf([
+        new Assert\Regex('/^0[0-9]{1} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}$/'),
+        new Assert\Regex('/^0[0-9]{9}$/'),
+    ])]
+    */
+    /*
+    #[Assert\Sequentially([
+        new Assert\NotNull,
+        new Assert\Type('string'),
+        new Assert\Length(min: 10),
+        //new Assert\Regex(Place::ADDRESS_REGEX),
+        //new App\Validation\Geolocalizable,
+    ])]
+    */
 
     #[ORM\Column(length: 15, nullable: true)]
     private ?string $tel_fix = null;
@@ -102,6 +136,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
+        /*
+        #[Assert\All([
+            new Assert\Regex('/^ROLE_[A-Z]+$/')
+        ])]
+        */
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
