@@ -27,3 +27,10 @@ const resumee = document.querySelectorAll(".resumee");
 createToggleElementsEvents(resumee, true);
 const resumee_detail = document.querySelectorAll(".resumee_detail");
 createToggleElementsEvents(resumee_detail, false);
+
+async function getCountries()
+{
+    let response = await fetch("/api");
+    let countries = await response.json();
+    console.log(countries);
+}
